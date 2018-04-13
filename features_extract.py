@@ -8,7 +8,7 @@ by line break.
 '''
 #parameters model
 if len(sys.argv) != 2:
-    print("cmd: python features_extract.py model.\ne.g. python features_extract.py vgg16.")
+    print("cmd: python features_extract.py model.\ne.g. python features_extract.py resnet.")
     exit()
 
 model = sys.argv[1]
