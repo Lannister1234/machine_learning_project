@@ -25,11 +25,15 @@ f = open("feature_and_labels.txt", 'w')
 cmd = "python extract_image_feature.py --image %s --model %s"
 for category in categories:
     for root, dirs, files in os.walk(category):
+        count = 0
         for file in files:
             if file.endswith(".jpg"):
                 try:
-                    feature = os.popen(cmd % (file, model)).read().strip()
-                    f.write(feature + ' ' + category + ' ' + file + '\n')  
+                    feature = os.popen(cmd % (root + '/' + file, model)).read().strip()
+                    f.write(feature + ' ' + category + ' ' + root + '/' + file + '\n')
+                    count += 1
+                    print(count, 'pictures done.')
                 except:
                     pass
+        print(root + ' done!')
 f.close()
