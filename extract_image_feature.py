@@ -84,8 +84,8 @@ image = preprocess(image)
 intermediate_model = Model(inputs=model.input,outputs=model.layers[-2].output)
 intermediate_feature = intermediate_model.predict(image)
 for i in intermediate_feature:
-	print(i)
-	print(" ")
+	for j in i:
+		print(str(j) + " ")
 
 # classify the image
 #print("[INFO] classifying image with '{}'...".format(args["model"]))
