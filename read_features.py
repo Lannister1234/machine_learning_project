@@ -1,6 +1,8 @@
 import numpy as np
 from sklearn.svm import SVC
 
+import pdb
+
 
 f = open("feature_and_labels.txt", 'r') 
 
@@ -17,8 +19,8 @@ f.close()
 
 #create test and train samples indice
 all_samples_num = len(labels)
-a = np.arange(all_samples_num)
-temp = np.random.shuffle(a)
+temp = np.arange(all_samples_num)
+np.random.shuffle(temp)
 
 train_sample_indice = temp[:int(len(temp) *0.8)]
 test_sample_indice = temp[int(len(temp) *0.8):]
@@ -27,6 +29,7 @@ test_sample_indice = temp[int(len(temp) *0.8):]
 X_samples = np.asarray(features)    # n_samples * n_features
 y_samples = np.asarray(labels)   # n_samples * 1
 
+pdb.set_trace()
 X_train = X_samples[train_sample_indice,:]
 y_train = []
 for i in train_sample_indice:
@@ -34,6 +37,8 @@ for i in train_sample_indice:
 y_train = np.asarray(y_train)
 
 # can change the multiclass classifier
+print("training ..")
+print("sample nums",len(y_train))
 clf = SVC()
 clf.fit(X_train, y_train)
 
@@ -55,6 +60,11 @@ y_pred = clf.predict(X_pred)
 # print(y_pred)
 # print(y_train)
 
-acc = np.sum(y_pred == y_true)
-print("acc:",acc/y_pred)
+# pdb.set_trace()
+
+acc = 0.0
+for i in range(len(y_pred)):
+    if(y_pred[i]==y_true[i]):
+        acc += 1
+print("acc:",acc/len(y_pred))
 
