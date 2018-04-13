@@ -1,5 +1,5 @@
 # USAGE
-# python classify_image.py --image images/soccer_ball.jpg --model vgg16
+# python classify_image.py --model vgg16
 
 # import the necessary packages
 from keras.applications import ResNet50
@@ -15,11 +15,11 @@ from keras import Model
 import numpy as np
 import argparse
 import cv2
+import os
+
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True,
-	help="path to the input image")
 ap.add_argument("-model", "--model", type=str, default="vgg16",
 	help="name of pre-trained network to use")
 args = vars(ap.parse_args())
@@ -62,30 +62,54 @@ if args["model"] in ("inception", "xception"):
 Network = MODELS[args["model"]]
 model = Network(weights="imagenet")
 
-# load the input image using the Keras helper utility while ensuring
-# the image is resized to `inputShape`, the required input dimensions
-# for the ImageNet pre-trained network
-
-#print("[INFO] loading and pre-processing image...")
-image = load_img(args["image"], target_size=inputShape)
-image = img_to_array(image)
-
-# our input image is now represented as a NumPy array of shape
-# (inputShape[0], inputShape[1], 3) however we need to expand the
-# dimension by making the shape (1, inputShape[0], inputShape[1], 3)
-# so we can pass it through thenetwork
-image = np.expand_dims(image, axis=0)
-
-# pre-process the image using the appropriate function based on the
-# model that has been loaded (i.e., mean subtraction, scaling, etc.)
-image = preprocess(image)
-
-# extract features of RESNET-50
 intermediate_model = Model(inputs=model.input,outputs=model.layers[-2].output)
-intermediate_feature = intermediate_model.predict(image)
-for i in intermediate_feature:
-	for j in i:
-		print(str(j) + " ")
+
+f = open("category.txt",'r') #
+file = f.readlines()
+f.close()
+categories = []
+for i in file:
+    categories.append(i.strip())
+    
+    
+f = open("feature_and_labels.txt", 'w')   
+cmd = "python extract_image_feature.py --image %s --model %s"
+for category in categories:
+    for root, dirs, files in os.walk(category):
+        count = 0
+        for file in files:
+            if file.endswith(".jpg"):
+                try:                  
+                    # load the input image using the Keras helper utility while ensuring
+                    # the image is resized to `inputShape`, the required input dimensions
+                    # for the ImageNet pre-trained network
+                    
+                    image = load_img(root + '/' + file, target_size=inputShape)
+                    image = img_to_array(image)
+                    
+                    # our input image is now represented as a NumPy array of shape
+                    # (inputShape[0], inputShape[1], 3) however we need to expand the
+                    # dimension by making the shape (1, inputShape[0], inputShape[1], 3)
+                    # so we can pass it through thenetwork
+                    image = np.expand_dims(image, axis=0)
+                    
+                    # pre-process the image using the appropriate function based on the
+                    # model that has been loaded (i.e., mean subtraction, scaling, etc.)
+                    image = preprocess(image)
+                    
+                    # extract features of RESNET-50
+                    intermediate_feature = intermediate_model.predict(image)
+                    
+                    for i in intermediate_feature:
+                        for feature in i:
+                            f.write(str(feature) + ' ')                  
+                    f.write(category + ' ' + root + '/' + file + '\n')
+                    count += 1
+                    print(count, 'pictures done.')
+                except:
+                    pass
+        print(root + ' done!')
+f.close()
 
 # classify the image
 #print("[INFO] classifying image with '{}'...".format(args["model"]))
