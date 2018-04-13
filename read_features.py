@@ -4,7 +4,6 @@ from sklearn.svm import SVC
 
 f = open("feature_and_labels.txt", 'r') 
 
-
 labels = []
 features = []
 filenames = []  
@@ -16,14 +15,17 @@ for line in f.readlines():
     features.append(temp)
 f.close()
 
+#create test and train samples indice
+all_samples_num = len(labels)
+a = np.arange(all_samples_num)
+temp = np.random.shuffle(a)
+
+train_sample_indice = temp[:int(len(temp) *0.8)]
+test_sample_indice = temp[int(len(temp) *0.8):]
+
+
 X_samples = np.asarray(features)    # n_samples * n_features
 y_samples = np.asarray(labels)   # n_samples * 1
-
-train_sample_indice = []
-test_sample_indice = []
-for i in range(4):
-	train_sample_indice.extend(list(range(i*20,i*20+15)))
-	test_sample_indice.extend(list(range(i*20+15,(i+1)*20)))
 
 X_train = X_samples[train_sample_indice,:]
 y_train = []
