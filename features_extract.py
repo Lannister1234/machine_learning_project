@@ -29,8 +29,10 @@ for category in categories:
         for file in files:
             if file.endswith(".jpg"):
                 try:
-                    feature = os.popen(cmd % (root + '/' + file, model)).read().strip()
-                    f.write(feature + ' ' + category + ' ' + root + '/' + file + '\n')
+                    features = os.popen(cmd % (root + '/' + file, model)).read().strip().split()
+                    for feature in features:
+                        f.write(feature + ' ')
+                    f.write(category + ' ' + root + '/' + file + '\n')
                     count += 1
                     print(count, 'pictures done.')
                 except:
