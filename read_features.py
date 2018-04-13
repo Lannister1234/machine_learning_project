@@ -8,5 +8,6 @@ for line in f.readlines():
     line = line.strip().split()
     labels.append(line[-2])
     filenames.append(line[-1])
-    features.append(line[:-2])
+    temp = [float(i) for i in line[:-2]]
+    features.append(temp)
 f.close()
