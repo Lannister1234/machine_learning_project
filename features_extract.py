@@ -22,7 +22,7 @@ for i in file:
     
     
 f = open("feature_and_labels.txt", 'w')   
-cmd = "python classify_image.py --image %s --model %s"
+cmd = "python extract_image_feature.py --image %s --model %s"
 for category in categories:
     for root, dirs, files in os.walk(category):
         for file in files:
