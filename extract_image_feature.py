@@ -72,7 +72,7 @@ for i in file:
     categories.append(i.strip())
     
     
-f = open("feature_and_labels.txt", 'w')   
+f = open("feature_and_labels_resnet-50.txt", 'w')   
 cmd = "python extract_image_feature.py --image %s --model %s"
 for category in categories:
     for root, dirs, files in os.walk(category):
