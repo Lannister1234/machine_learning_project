@@ -1,9 +1,28 @@
+# USAGE
+# python read_features.py --model vgg16
+
 import numpy as np
+import argparse
 from sklearn.svm import SVC
 from collections import Counter
 import pdb
 
-f = open("feature_and_labels1.txt", 'r')
+ap = argparse.ArgumentParser()
+ap.add_argument("-model", "--model", type=str, default="vgg16",
+	help="name of pre-trained network to use")
+args = vars(ap.parse_args())
+
+# define a dictionary that maps model names to their classes
+# inside Keras
+MODELS = {
+	"vgg16": "_vgg16",
+	"vgg19": "_vgg19",
+	"resnet": "_resnet"
+}
+
+filename = "feature_and_labels" + MODELS[args["model"]] + ".txt"
+
+f = open(filename, 'r')
 
 labels = []
 features = []
