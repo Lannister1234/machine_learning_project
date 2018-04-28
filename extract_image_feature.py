@@ -1,5 +1,5 @@
 # USAGE
-# python classify_image.py --model vgg16
+# python extract_image_feature.py --model vgg16
 
 # import the necessary packages
 from keras.applications import ResNet50

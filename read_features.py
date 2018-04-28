@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.svm import SVC
-
+from collections import Counter
 import pdb
 
 
@@ -17,19 +17,27 @@ for line in f.readlines():
     features.append(temp)
 f.close()
 
+categories = {}
+for label in np.unique(labels):
+    categories[label] = []
+
+for index, value in enumerate(labels):
+    categories[value].append(index)
+    
+min_category_num = Counter(labels).most_common()[-1][1] #minimum samples numbers
+all_samples = []
+for label in np.unique(labels):
+    np.random.shuffle(categories[label])
+    all_samples.extend(categories[label][:min_category_num])
+    
 #create test and train samples indice
-all_samples_num = len(labels)
-temp = np.arange(all_samples_num)
-np.random.shuffle(temp)
-
-train_sample_indice = temp[:int(len(temp) *0.8)]
-test_sample_indice = temp[int(len(temp) *0.8):]
-
+np.random.shuffle(all_samples)
+train_sample_indice = all_samples[:int(len(all_samples) *0.8)]
+test_sample_indice = all_samples[int(len(all_samples) *0.8):]
 
 X_samples = np.asarray(features)    # n_samples * n_features
 y_samples = np.asarray(labels)   # n_samples * 1
 
-pdb.set_trace()
 X_train = X_samples[train_sample_indice,:]
 y_train = []
 for i in train_sample_indice:

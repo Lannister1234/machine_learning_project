@@ -7,4 +7,4 @@ create a category.txt with categories which you want to be pretrained in it
 and split them by line break.
 
 command
-    python classify_image.py --model vgg16
+    python extract_image_feature.py --model vgg16
