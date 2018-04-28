@@ -8,3 +8,4 @@ and split them by line break.
 
 command
     python extract_image_feature.py --model vgg16
+    python read_features.py --model vgg16
