@@ -1,3 +1,4 @@
 feature_and_labels_vgg16.txt.zip filter=lfs diff=lfs merge=lfs -text
 feature_and_labels_resnet.txt.zip filter=lfs diff=lfs merge=lfs -text
 feature_and_labels_vgg19.txt.zip filter=lfs diff=lfs merge=lfs -text
+feature_and_labels_fine_tune_resnet.txt.zip filter=lfs diff=lfs merge=lfs -text

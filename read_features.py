@@ -17,7 +17,8 @@ args = vars(ap.parse_args())
 MODELS = {
 	"vgg16": "_vgg16",
 	"vgg19": "_vgg19",
-	"resnet": "_resnet"
+	"resnet": "_resnet",
+    "fine_tune_resnet": "_fine_tune_resnet"
 }
 
 filename = "feature_and_labels" + MODELS[args["model"]] + ".txt"
