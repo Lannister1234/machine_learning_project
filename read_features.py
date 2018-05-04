@@ -25,12 +25,16 @@ MODELS = {
     "fine_tune_resnet": "_fine_tune_resnet"
 }
 
+print('----------------------------')
+print(args["model"])
+
 filename = "feature_and_labels" + MODELS[args["model"]] + ".txt"
 
 f = open(filename, 'r')
 labels = []
 features = []
 filenames = []
+
 for line in f.readlines():
     line = line.strip().split()
     labels.append(line[-2])
@@ -40,11 +44,8 @@ for line in f.readlines():
 f.close()
 
 try:
-    f = open("indice.txt", 'r')
     all_samples = pickle.load(open("indice.txt", "rb"))
-    f.close()
 except:
-    f = open("indice.txt", 'w')
     categories = {}
     for label in np.unique(labels):
         categories[label] = []
@@ -62,7 +63,6 @@ except:
     np.random.shuffle(all_samples)
 
     pickle.dump(all_samples, open("indice.txt", "wb"))
-    f.close()
 
 #create test and train samples indice
 train_sample_indice = all_samples[:int(len(all_samples) * 0.8)]
@@ -119,17 +119,18 @@ label_to_index = {
 
 acc = 0.0
 correct_num_class = [0 for x in range(5)]
-sum_class = [0 for x in range(5)]
+sum_true_class = [0 for x in range(5)]
 sum_predict_class = [0 for x in range(5)]
 misclassfied_files = {}
 for i in range(len(y_pred)):
-    predict_class = label_to_index[y_pred[i]]
-    true_class = label_to_index[y_true[i]]
-    sum_predict_class[predict_class] += 1
-    sum_class[true_class] += 1
+    predict_class_index = label_to_index[y_pred[i]]
+    sum_predict_class[predict_class_index] += 1
+
+    true_class_index = label_to_index[y_true[i]]
+    sum_true_class[true_class_index] += 1
 
     if (y_pred[i] == y_true[i]):
-        correct_num_class[predict_class] += 1
+        correct_num_class[predict_class_index] += 1
         acc += 1
     else:
         fileList = misclassfied_files.get(y_true[i], list())
@@ -138,14 +139,21 @@ for i in range(len(y_pred)):
 
 print("Peaceful Passion Fear Happiness Sadness")
 print("correct in each class: ")
-print(correct_num_class)
-print('\n')
-print("total number in each class(truth)")
-print(sum_class)
+temp = ''
+for i in correct_num_class:
+    temp += str(i) + '\t'
+print(temp)
+print("total number in each class(truth):")
+temp = ''
+for i in sum_true_class:
+    temp += str(i) + '\t'
+print(temp)
 print("total accuracy:", acc / len(y_pred))
-print('\n')
-print("total number in each class(prediction)")
-print(sum_predict_class)
+print("total number in each class(prediction):")
+temp = ''
+for i in sum_predict_class:
+    temp += str(i) + '\t'
+print(temp)
 precision = []
 for i, j in zip(correct_num_class, sum_predict_class):
     precision.append(i / j)
