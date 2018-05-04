@@ -158,7 +158,10 @@ precision = []
 for i, j in zip(correct_num_class, sum_predict_class):
     precision.append(i / j)
 print("precision of each class")
-print(precision)
+temp = ''
+for i in precision:
+    temp += str(i) + '\t'
+print(temp)
 
 # print("misclassied files")
 # print(misclassfied_files)
