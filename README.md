@@ -9,3 +9,13 @@ and split them by line break.
 command:<br>
 * python extract_image_feature.py --model vgg16
 * python read_features.py --model vgg16
+
+change_cate_order.py        change order of features<br>
+classify_image.py           classify images<br>
+cnn_finetune_vgg16.py       fine-tune networks<br>
+extract_image_feature.py    extract features using vgg16 and so on<br>
+load_data.py                load data
+read_features.py            read features from txt and train svm
+resnet50_best.h5            weights after fine-tuning
+result.xlsx                 result
+run.sh                      for testing
